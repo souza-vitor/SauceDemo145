@@ -64,4 +64,12 @@ test('Realizar o fluxo de compra da mochila', async ({page}) => {
     
     //Esse é fluxo E2E completo.
 
+
+    //comandos para teclado
+    //<Tab>: await page.press('[data-test="username"]', 'Tab');
+    //<Enter>:  await page.locator('[name="q"]', 'Enter')
+
+    //Sortear ações
+    // const usarClique = Math.random() < 0.7; // 70% clique, 30% Tab
+
 }) // final do teste
