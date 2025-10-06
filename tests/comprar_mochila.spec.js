@@ -54,7 +54,7 @@ test('Realizar o fluxo de compra da mochila', async ({page}) => {
     await expect(page.locator('span.title')).toHaveText('Checkout: Your Information')
 
     // Espera de 1 segundo
-    await page.waitForTimeout(1000) // mal visto  -- alfinete -- 
+    //await page.waitForTimeout(1000) // mal visto  -- alfinete -- 
     
     //To-do - Lista 07.
     //clicar no botão checkout - DONE
