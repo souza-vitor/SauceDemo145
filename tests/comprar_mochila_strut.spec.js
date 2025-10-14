@@ -5,28 +5,20 @@ test.describe('SauceDemo - fluxo principal de compra', () => {
     test('Login, Adicionar Mochila no Carrinho e Verificações', 
         async({ page }, testInfo) => {
         testInfo.setTimeout(testInfo.timeout + 15000)
-
+        
+        // inicio do passo 1
         await test.step('Acessar SauceDemo.com', async() => {
             await page.goto('/')
 
             await expect(page).toHaveURL('/') // Verificação clássica
- 
-            await page.waitForLoadState('load') // espera a página carregar por completo
-           
-            await page.waitForResponse(response =>
-                response.url() === '/' && response.status() === 200
-                && response.request().method() === 'GET'
-            )
- 
-            // await page.getByText('trigger response').click();
-            // const response = await responsePromise;
-            // )
- 
+            
             // verificar o botão Login - também é clássica
             await expect(page.locator('[data-test="login-button"]')).toHaveText('Login')
             await snap(page, testInfo, 'TC001-Passo01-Home')
+
         }) // fim do passo 1
 
+        // inicio do passo 2
         await test.step('Login com sucesso', async () => {
             await page.locator('[data-test="username"]').fill('standard_user')
             await page.locator('[data-test="password"]').fill('secret_sauce')
@@ -38,6 +30,7 @@ test.describe('SauceDemo - fluxo principal de compra', () => {
 
         }) // fim do passo 2
 
+        // inicio do passo 3
         await test.step('Adicionar mochila no carrinho', async () => {
             //await page.locator("#add-to-cart-sauce-labs-backpack").click()
             const seletor_mochila = page.locator('.inventory_item').filter({ hasText: /Backpack/ })
