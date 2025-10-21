@@ -8,20 +8,20 @@ function isoTs() {
     return nova_data.toISOString().replace('T', ' ').replace('Z', '')
 }
 
-const LOGS_DIR = process.env.LOGS_DIR || path.join(process.cwd(), 'artifacts', 'logs')
-if (!fs.existsSync(LOGS_DIR)) fs.mkdirSync(LOGS_DIR, {recursive:true})
+const LOGS_DIR = process.env.LOGS_DIR || path.join(process.cwd(), 'artifacts', 'logs') 
+if (!fs.existsSync(LOGS_DIR)) fs.mkdirSync(LOGS_DIR, {recursive: true})
 
-// cria o arquivo de log para a execução
+// cria o arquivo de log para a execução    
 const EXEC_LOG = path.join(LOGS_DIR, 'steps.log')
 
 // estrutura para escrever no arquivo de log
 export const test = base.extend({
     log: async ({}, use, testInfo) => {
         function log(message) {
-            // cada sera composta por 
-            // {Data/Hora} {Titulo do Teste} e {Mensagem}
+            // cada linha será composta por
+            // {Data/Hora} {Titulo do Teste} {Mensagem}
             const line = `[${isoTs()}] [${testInfo.title}] ${message}\n`
-            fs.appendFileSync(EXEC_LOG, line, 'utf-8') // escreve no arquivo
+            fs.appendFileSync(EXEC_LOG, line, 'utf8') // escreve no arquivo
             return line;
         }
         await use(log);
