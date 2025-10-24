@@ -32,6 +32,35 @@ async function add_to_cart_step(page) {
     await expect(page.locator('[data-test="inventory-item-price"]')).toHaveText('$29.99')
 }
 
+async function checkout_step_one(page) {
+    await page.locator('[data-test="checkout"]').click()
+    await expect(page).toHaveURL(/checkout-step-one\.html/)
+    await expect(page.locator('[data-test="title"]')).toHaveText('Checkout: Your Information')
+    await page.locator('[data-test="firstName"]').fill('John')
+    await page.locator('[data-test="lastName"]').fill('Tester')
+    await page.locator('[data-test="postalCode"]').fill('99999000')
+}
+
+async function checkout_step_two(page) {
+    await page.locator('[data-test="continue"]').click()
+    await expect(page).toHaveURL(/checkout-step-two\.html/)
+    await expect(page.locator('[data-test="title"]')).toHaveText('Checkout: Overview')
+    await expect(page.locator('[data-test="payment-info-value"]')).toHaveText('SauceCard #31337')
+    await expect(page.locator('[data-test="shipping-info-value"]')).toHaveText('Free Pony Express Delivery!')
+    await expect(page.locator('[data-test="subtotal-label"]')).toHaveText('Item total: $29.99')
+    await expect(page.locator('[data-test="total-label"]')).toHaveText('Total: $32.39')
+}
+
+// data-test="finish"
+
+async function finish_order(page) {
+    await page.locator('[data-test="finish"]').click()
+    await expect(page).toHaveURL(/checkout-complete\.html/)
+    await expect(page.locator('[data-test="title"]')).toHaveText('Checkout: Complete!')
+    await expect(page.locator('[data-test="complete-header"]')).toHaveText('Thank you for your order!')
+    await expect(page.locator('[data-test="complete-text"]')).toHaveText('Your order has been dispatched, and will arrive just as fast as the pony can get there!')
+}
+
 test.describe('SauceDemo - fluxo principal de compra', () => {
     test('Comprar Mochila Direto', 
         async({ page }, testInfo) => {
@@ -65,6 +94,24 @@ test.describe('SauceDemo - fluxo principal de compra', () => {
             await add_to_cart_step(page, testInfo)
             await snap(page, testInfo, 'TC001-Passo4-Carrinho-Conferido')
         }) // fim do passo 4
+
+        // inicio do passo 5
+        await test.step('Checkout parte 1', async () => {
+            await checkout_step_one(page, testInfo)
+            await snap(page, testInfo, 'TC001-Passo5-Checkout-parte-um')
+        }) // fim do passo 5
+
+        // inicio do passo 6
+        await test.step('Checkout parte 2', async () => {
+            await checkout_step_two(page, testInfo)
+            await snap(page, testInfo, 'TC001-Passo6-Checkout-parte-dois')
+        }) // fim do passo 6
+
+        // inicio do passo 7
+        await test.step('Finalizar compra', async () => {
+            await finish_order(page, testInfo)
+            await snap(page, testInfo, 'TC001-Passo7-Finalizar-compra')
+        }) // fim do passo 7
 
         }) // fim do teste 1
     
@@ -115,6 +162,24 @@ test.describe('SauceDemo - fluxo principal de compra', () => {
                     await add_to_cart_step(page)
                     await snap(page, testInfo, 'TC002-Passo4-Carrinho-Conferido')
                 }) // fim do passo 4
+                
+                // inicio do passo 5
+                await test.step('Checkout parte 1', async () => {
+                    await checkout_step_one(page, testInfo)
+                    await snap(page, testInfo, 'TC002-Passo5-Checkout-parte-um')
+                }) // fim do passo 5
+
+                // inicio do passo 6
+                await test.step('Checkout parte 2', async () => {
+                    await checkout_step_two(page, testInfo)
+                    await snap(page, testInfo, 'TC002-Passo6-Checkout-parte-dois')
+                }) // fim do passo 6
+
+                // inicio do passo 7
+                await test.step('Finalizar compra', async () => {
+                    await finish_order(page, testInfo)
+                    await snap(page, testInfo, 'TC002-Passo7-Finalizar-compra')
+                }) // fim do passo 7
 
         }) // fim do teste 2
             
